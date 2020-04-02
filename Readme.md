@@ -1,7 +1,7 @@
 # Tea Time SSL
-## My attempt at solid state logic and a general playground for my Audio Plugin Shenanigans
+## My attempt at solid state logic and a general playground for my audio plugin shenanigans
 
-### **WARNING:** This Readme is much more like a journal, stream of consciousness type joint. I am not a relable author and possibly a bad friend.
+### **WARNING:** This Readme is much more like a journal, stream of consciousness type joint. I am not a reliable author and possibly a bad friend.
 
 ### Specs
 * Originally Built In VS 2019 (Hence the VS Solutions)
