@@ -1,5 +1,12 @@
+#folders
 .vs
+Debug
+.vscode
+x64
+
+#files
 *.log
 *.exe
 *.tlog
-.vscode
+*.vst3
+*.txt
