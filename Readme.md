@@ -1,15 +1,13 @@
 # Tea Time SSL
-## I mashed my name with SSL so it seems like I got my own suite of high end plug ins. Hah, 'high end'. good one mate.
-
-### **WARNING:** This Readme is much more like a journal, stream of consciousness type joint. I am not a reliable author and possibly a bad friend.
 
 ### Specs
 * Originally Built In VS 2019 (Hence the VS Solutions)
 * I don't use Mac so don't expect any of the things to work with it
 
 ### Current Algorithms
-* Amp Envelope (a bad one! Ha!)
+* Amp Envelope
 * Auto Panner
+* Filter (In progress)
 
 ### Builds - Each branch is a different framework/build of the SSL
 * ***Stolen***: Made with some base classes I stole from a Audio Design book repo. I'd post credits but methinks if they ever saw the butchery that I did to their code it would bring only dishonor to my clan.
