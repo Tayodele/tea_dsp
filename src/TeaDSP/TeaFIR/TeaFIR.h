@@ -6,6 +6,10 @@ so for now a flexible dynamic FIR will do.
 Todo: more filters
 ***/
 
+#include <vector>
+#include <queue>
+#include "../TeaCommon/conversions.h"
+
 namespace TTModules {
 
   class TeaFIR {
@@ -14,24 +18,28 @@ namespace TTModules {
 
     TeaFIR();
 
+    TeaFIR(float afs);
+
     ~TeaFIR();
 
     float getCutoff();
-    void  setCutoff(auto val);
+    void  setCutoff(float val);
     
-    float getOrder();
-    void  setOrder(auto val);
+    int getOrder();
+    void  setOrder(int val);
     
-    float getType();
-    void  setType(auto val);
-
     enum filtertype {
       LOW,
       HIGH,
       BAND,
       STOP,
       BELL,
-    }
+    };
+    
+    filtertype getType();
+    void  setType(filtertype val);
+
+    void buildFilter();
 
     void filter(float* input);
 
@@ -46,12 +54,14 @@ namespace TTModules {
     float fs;
     
     //queue used for buffer 
-    float* bufq;
-    float* coeffs;
+    std::queue<float>* bufq;
+    std::vector<float>* coeffs;
     int qin;
     int qout;
     //length of queue
     int order;
+    //turn filter on/off
+    bool enable;
 
   };
 };

@@ -1,9 +1,4 @@
-#define _USE_MATH_DEFINES
 #include "conversions.h"
-#include <math.h>
-#include <cmath>
-#include <stdlib.h>
-
 
 using namespace TTModules;
 using namespace std;
@@ -45,5 +40,26 @@ int TTModules::gcd(int x, int y) {
   else {
     r = y % x;
     gcd(x,r);
+  }
+}
+  
+float TTModules::roundfs(float x,unsigned int n) {
+  int scale = pow(10,n-1);
+  unsigned int overdot = n-1;
+  float res = x;
+  if(n == 0) return 0; 
+  if(x > scale) {
+    res /= scale;
+    return round(res)*scale;
+  } else {
+    for(int i = n-2;i >= 0; i--){
+      if(x > pow(10,i)) {
+        overdot = 1;
+        break;
+      }
+    }
+    scale = pow(10,overdot);
+    res *= scale;
+    return round(res)/scale;
   }
 }

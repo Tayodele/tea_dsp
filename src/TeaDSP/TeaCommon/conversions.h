@@ -1,4 +1,3 @@
-#define _USE_MATH_DEFINES
 #include <math.h>
 #include <stdlib.h>
 
@@ -31,10 +30,15 @@ namespace TTModules {
 
   float freq2BPM(float Hz);
 
-
   /******** Other Algorithms ************/
 
   //gcd using euclidean
   int gcd(int x,int y);
+
+  //rounding for floats
+  float roundfs(float x,unsigned int n);
+
+  /********* Some Constants ************/
+  const float PI = 2.*acos(0);
 
 };

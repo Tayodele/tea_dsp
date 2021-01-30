@@ -1,0 +1,38 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2019
+
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TeaFilter - Standalone Plugin", "TeaFilter_StandalonePlugin.vcxproj", "{3C9AEF87-8BBF-F4BF-52B8-6F04F2542E0D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8DE6017A-1F06-79BF-A6BF-98C960F150B7} = {8DE6017A-1F06-79BF-A6BF-98C960F150B7}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TeaFilter - VST3", "TeaFilter_VST3.vcxproj", "{C09EBC34-6E93-9D1F-D7B4-DE29C648896E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8DE6017A-1F06-79BF-A6BF-98C960F150B7} = {8DE6017A-1F06-79BF-A6BF-98C960F150B7}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TeaFilter - Shared Code", "TeaFilter_SharedCode.vcxproj", "{8DE6017A-1F06-79BF-A6BF-98C960F150B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C09EBC34-6E93-9D1F-D7B4-DE29C648896E}.Debug|x64.ActiveCfg = Debug|x64
+		{C09EBC34-6E93-9D1F-D7B4-DE29C648896E}.Debug|x64.Build.0 = Debug|x64
+		{C09EBC34-6E93-9D1F-D7B4-DE29C648896E}.Release|x64.ActiveCfg = Release|x64
+		{C09EBC34-6E93-9D1F-D7B4-DE29C648896E}.Release|x64.Build.0 = Release|x64
+		{3C9AEF87-8BBF-F4BF-52B8-6F04F2542E0D}.Debug|x64.ActiveCfg = Debug|x64
+		{3C9AEF87-8BBF-F4BF-52B8-6F04F2542E0D}.Debug|x64.Build.0 = Debug|x64
+		{3C9AEF87-8BBF-F4BF-52B8-6F04F2542E0D}.Release|x64.ActiveCfg = Release|x64
+		{3C9AEF87-8BBF-F4BF-52B8-6F04F2542E0D}.Release|x64.Build.0 = Release|x64
+		{8DE6017A-1F06-79BF-A6BF-98C960F150B7}.Debug|x64.ActiveCfg = Debug|x64
+		{8DE6017A-1F06-79BF-A6BF-98C960F150B7}.Debug|x64.Build.0 = Debug|x64
+		{8DE6017A-1F06-79BF-A6BF-98C960F150B7}.Release|x64.ActiveCfg = Release|x64
+		{8DE6017A-1F06-79BF-A6BF-98C960F150B7}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
