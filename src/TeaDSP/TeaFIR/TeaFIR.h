@@ -6,9 +6,10 @@ so for now a flexible dynamic FIR will do.
 Todo: more filters
 ***/
 
-#include <vector>
+#include <array>
 #include <queue>
-#include "../TeaCommon/conversions.h"
+#include "TeaCommon/conversions.h"
+#include <stdlib.h>
 
 namespace TTModules {
 
@@ -55,7 +56,8 @@ namespace TTModules {
     
     //queue used for buffer 
     std::queue<float>* bufq;
-    std::vector<float>* coeffs;
+    //array for coeffs
+    float* coeffs;
     int qin;
     int qout;
     //length of queue

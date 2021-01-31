@@ -1,5 +1,4 @@
 #include "TeaFIR.h"
-#include <stdlib.h>
 
 using namespace TTModules;
 
@@ -9,7 +8,7 @@ TeaFIR::TeaFIR() {
   cutoff = 0.;
   order = 2;
   bufq = new std::queue<float>;
-  coeffs = new std::vector<float>;
+  coeffs = new float[order];
 }
 
 TeaFIR::TeaFIR(float afs) {
@@ -17,7 +16,7 @@ TeaFIR::TeaFIR(float afs) {
   cutoff = 0.;
   order = 2;
   bufq = new std::queue<float>;
-  coeffs = new std::vector<float>;
+  coeffs = new float[order];
 }
 
 
@@ -43,7 +42,8 @@ void TeaFIR::setOrder(int val){
   delete bufq;
   bufq = new std::queue<float>;
   for(int i = 0; i < order; i++) bufq->push(0.);
-  coeffs->resize(order);
+  delete coeffs;
+  coeffs = new float[order];
   buildFilter();
 }
 
@@ -57,15 +57,22 @@ void TeaFIR::setType(filtertype val){
 
 void TeaFIR::buildFilter()  {
   for(int i = 1; i <= order; i++) {
-    coeffs[i-1] = (float)(sin(2*pi*(cutoff/fs)*(i-order/2)) / (pi*(i-order/2)));
-    coeffs[i-1] *= (float)(0.54f + 0.46f*cos(2*pi*(i-order/2) / order));
+    coeffs[i-1] = (float)(sin(2*PI*(cutoff/fs)*(i-order/2)) / (PI*(i-order/2)));
+    coeffs[i-1] *= (float)(0.54f + 0.46f*cos(2*PI*(i-order/2) / order));
   }
 }
 
 void TeaFIR::filter(float* input) {
   float output = 0;
+  float temp;
   for(int i=0;i < bufq->size(); i++) {
-    output += bufq[i] * coeffs[i];
+    temp = bufq->front();
+    output += temp * coeffs[i];
+    bufq->pop();
+    bufq->push(temp);
   }
+  temp = *input;
+  bufq->pop();
+  bufq->push(temp);
   *input += output;
 }
