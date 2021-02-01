@@ -6,7 +6,6 @@ so for now a flexible dynamic FIR will do.
 Todo: more filters
 ***/
 
-#include <array>
 #include <queue>
 #include "TeaCommon/conversions.h"
 #include <stdlib.h>

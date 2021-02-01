@@ -3,6 +3,7 @@
 Debug
 .vscode
 x64
+**/bazel-*/
 
 #files
 *.log
