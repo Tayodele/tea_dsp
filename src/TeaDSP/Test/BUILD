@@ -25,7 +25,6 @@ cc_test(
           "//TeaCommon:TeaCommon"],
 )
 
-
 cc_test(
   name = "test-fir",
   size = "small",
@@ -33,6 +32,16 @@ cc_test(
   deps = ["@googletest//googletest-release-1.10.0:gtest",
           "@googletest//googletest-release-1.10.0:gtest_main",
           "//TeaFIR:TeaFIR",
+          "//TeaCommon:TeaCommon"],
+)
+
+cc_test(
+  name = "test-gen",
+  size = "small",
+  srcs = ["TeaGenerator_unittest.cpp"],
+  deps = ["@googletest//googletest-release-1.10.0:gtest",
+          "@googletest//googletest-release-1.10.0:gtest_main",
+          "//:TeaGenerator",
           "//TeaCommon:TeaCommon"],
 )
 
