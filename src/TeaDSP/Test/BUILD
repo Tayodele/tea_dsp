@@ -1,11 +1,4 @@
 # https://docs.bazel.build/versions/master/be/c-cpp.html#cc_library
-cc_library(
-  name = "TeaGenerator",
-  srcs = ["TeaGenerator.cpp"],
-  hdrs = ["TeaGenerator.h"],
-  deps = ["//TeaCommon:TeaCommon"],
-)
-
 cc_test(
   name = "test-lfo",
   size = "small",
@@ -41,7 +34,7 @@ cc_test(
   srcs = ["TeaGenerator_unittest.cpp"],
   deps = ["@googletest//googletest-release-1.10.0:gtest",
           "@googletest//googletest-release-1.10.0:gtest_main",
-          "//Test:TeaGenerator",
+          "//Test/TeaTest:TeaTest",
           "//TeaCommon:TeaCommon"],
 )
 

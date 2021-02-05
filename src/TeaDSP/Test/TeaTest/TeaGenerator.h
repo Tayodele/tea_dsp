@@ -5,7 +5,7 @@ A Wave generator for tests. This is only meant for testing
 so it doesn't have to be fast nor efficient. Just enough to make waves for analysis and self-check
 */
 
-namespace TTModules {
+namespace TTTest {
 
   class TeaGenerator {
 

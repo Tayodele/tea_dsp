@@ -5,6 +5,7 @@
 #include <string>
 #include "math.h"
 
+using namespace TTTest;
 using namespace TTModules;
 
 TeaGenerator::TeaGenerator() {

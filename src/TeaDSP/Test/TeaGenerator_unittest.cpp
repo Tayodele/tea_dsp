@@ -1,20 +1,16 @@
 #include "gtest/gtest.h"
-#include "TeaCommon/conversions.h"
-#include "Test/TeaGenerator.h"
+#include "TeaTest/TeaGenerator.h"
+#include "TeaTest/DSPAsserts.h"
 #include <vector>
+#ifndef COMMONTEA
+#define COMMONTEA
+#include "TeaCommon/conversions.h"
+#endif
 
 using namespace TTModules;
+using namespace TTTest;
 
 namespace {
-
-  testing::AssertionResult checkWave(std::vector<float> testee,std::vector<float> checker,int sigfig) {
-    for(int i: testee) {
-      if(roundfs(testee[i],sigfig) != roundfs(checker[i],sigfig)) {
-        return testing::AssertionFailure() << "point " << i << " does not match." << " Testee " << roundfs(testee[i],sigfig) << " Checker " << roundfs(checker[i],sigfig);
-      }
-    }
-    return testing::AssertionSuccess();
-  }
 
   TEST(GeneratorTest,SimpleWaveTest) {
     TeaGenerator aGen;
