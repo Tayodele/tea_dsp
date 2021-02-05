@@ -1,4 +1,5 @@
 #include "TeaFIR.h"
+#include "TeaCommon/conversions.h"
 
 using namespace TTModules;
 

@@ -1,4 +1,4 @@
-o_sig = dlmread("data.txt");
+o_sig = dlmread("../bazel-bin/Test/test-gen.exe.runfiles/teadsp/pulsedata.txt");
 
 Lo = length(o_sig);
 

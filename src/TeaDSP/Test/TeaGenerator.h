@@ -1,4 +1,3 @@
-#include "TeaCommon/conversions.h"
 #include <vector>
 
 /*
@@ -18,7 +17,7 @@ namespace TTModules {
     float getFs();
     void setFs(float afs);
 
-    std::vector<float> * getPulse();
+    std::vector<float> getPulse();
 
     // Populates pulse, optionally can be a chirp
     void genPulse(float freq, float length, float chirpmask, bool print);
@@ -29,9 +28,9 @@ namespace TTModules {
     //sample rate
     float fs;
     //Pulse generated
-    std::vector<float>* pulse;
+    std::vector<float> pulse;
     //Last pulse settings, [freq,length,chirp]
-    std::vector<float*> * oldpulses;
+    std::vector<float*> oldpulses;
     
   };
 };

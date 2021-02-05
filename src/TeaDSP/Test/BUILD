@@ -41,7 +41,7 @@ cc_test(
   srcs = ["TeaGenerator_unittest.cpp"],
   deps = ["@googletest//googletest-release-1.10.0:gtest",
           "@googletest//googletest-release-1.10.0:gtest_main",
-          "//:TeaGenerator",
+          "//Test:TeaGenerator",
           "//TeaCommon:TeaCommon"],
 )
 
