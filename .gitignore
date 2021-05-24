@@ -11,3 +11,4 @@ x64
 *.tlog
 *.vst3
 *.txt
+!requirements.txt

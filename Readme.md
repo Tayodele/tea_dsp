@@ -11,7 +11,7 @@
 
 * ***JUCE***: I know I need to learn how to make GUI interfaces, but for now JUCE is nice for GIU and the buffer. All the DSP is hand made because if I ever want to have my own codebase for homebrew plugins it would involve me writing my own GUI and buffer.
 
-* ***VST SDK***: I light how lightweight it is, and it is the bare minimum for building VST's. Want to build with just this and my own GUI Framework at some point
+* ***VST SDK***: I like how lightweight it is, and it is the bare minimum for building VST's. Want to build with just this and my own GUI Framework at some point
 
 ### Tools used
 * VS 2020
