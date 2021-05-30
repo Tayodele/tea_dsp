@@ -1,13 +1,13 @@
 #include "gtest/gtest.h"
 #include "TeaFIR/TeaFIR.h"
 #include "TeaCommon/conversions.h"
-#include "Test/TeaGenerator.h"
-#include "Test/DSPAsserts.h"
+#include "TeaTest/TeaGenerator.h"
+#include "TeaTest/DSPAsserts.h"
 #include <iostream>
 #include <fstream>
 
 using namespace TTModules;
-using namespace std;
+using namespace TTTest;
 
 namespace {
   TEST(FIRTest,MathCheck) {
