@@ -4,6 +4,8 @@ Debug
 .vscode
 x64
 **/bazel-*/
+TestTones/
+teapy/
 
 #files
 *.log
@@ -11,3 +13,5 @@ x64
 *.tlog
 *.vst3
 *.txt
+*.code-workspace
+!requirements.txt

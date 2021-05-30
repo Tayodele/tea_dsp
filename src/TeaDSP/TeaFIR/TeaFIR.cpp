@@ -1,34 +1,38 @@
 #include "TeaFIR.h"
 #include "TeaCommon/conversions.h"
+#include <fftw3.h>
 
 using namespace TTModules;
 
 //FIR
 TeaFIR::TeaFIR() {
-  fs = 44100.;
-  cutoff = 0.;
-  order = 2;
-  bufq = new std::queue<float>;
-  coeffs = new float[order];
+  init();
 }
 
-TeaFIR::TeaFIR(float afs) {
+TeaFIR::TeaFIR(float afs = 44100,float ord = 2.) {
+  init(afs,ord);
+}
+
+void TeaFIR::init(float afs = 44100.,float ord = 2.) {
   fs = afs;
   cutoff = 0.;
-  order = 2;
-  bufq = new std::queue<float>;
+  order = ord;
   coeffs = new float[order];
+  buff = AudioBuffer(fs,256);
+  //using constant for now, want to test the speed of this
+  fresp = new float[1<<16];
+  resp_size = int(1<<16);
+  buildFilter();
 }
 
-
 TeaFIR::~TeaFIR() {
-  delete bufq;
   delete coeffs;
 }
 
 float TeaFIR::getCutoff(){
   return cutoff;
 }
+
 void TeaFIR::setCutoff(float val){
   cutoff = val;
   buildFilter();
@@ -40,12 +44,7 @@ int TeaFIR::getOrder(){
 void TeaFIR::setOrder(int val){
   if(val < 2) order = 2;
   order = val*2;
-  delete bufq;
-  bufq = new std::queue<float>;
-  for(int i = 0; i < order; i++) bufq->push(0.);
-  delete coeffs;
-  coeffs = new float[order];
-  buildFilter();
+  setCoeffs();
 }
 
 TeaFIR::filtertype TeaFIR::getType(){
@@ -57,23 +56,41 @@ void TeaFIR::setType(filtertype val){
 }
 
 void TeaFIR::buildFilter()  {
-  for(int i = 1; i <= order; i++) {
-    coeffs[i-1] = (float)(sin(2*PI*(cutoff/fs)*(i-order/2)) / (PI*(i-order/2)));
-    coeffs[i-1] *= (float)(0.54f + 0.46f*cos(2*PI*(i-order/2) / order));
+  // Rectangle Response
+  double* rect_resp = new double[resp_size];
+  double* rect_wave = new double[resp_size];
+  plan = fftw_plan_r2r_1d(resp_size, rect_resp, rect_wave, fftw_r2r_kind(1), 0);    
+  for(int i = 0; i < resp_size; i++) {
+    if(i <= int(cutoff)) rect_resp[i] = 1;
+    else if(i >= int(resp_size) - int(cutoff)) rect_resp[i] = 1;
+    else rect_resp[i] = 0;
   }
+  // IFFT
+  // Window
+  setCoeffs();
+  fftw_destroy_plan(plan);
 }
 
-void TeaFIR::filter(float* input) {
-  float output = 0;
-  float temp;
-  for(int i=0;i < bufq->size(); i++) {
-    temp = bufq->front();
-    output += temp * coeffs[i];
-    bufq->pop();
-    bufq->push(temp);
+// Passes one sample block thorugh the filter
+// Maybe put the convolution as a general function?
+int TeaFIR::filter() {
+  int inp = buff.blocksize - 1;
+  int outp = 0;
+  while(inp >= 0) {
+    auto temp = 0.;
+    for(auto j = 0; j < csize; j++) {
+      temp += buff.sampin[inp-j] * coeffs[csize-j-1];
+    }
+    buff.sampout[outp] = temp;
+    outp++;
+    inp--;
   }
-  temp = *input;
-  bufq->pop();
-  bufq->push(temp);
-  *input += output;
+  return 0;
+}
+
+void TeaFIR::setCoeffs() {
+  int half  = resp_size/2 - csize/2;
+  for(int i = 0; i < csize; i++){
+    coeffs[i] = fresp[half+i];
+  }
 }
