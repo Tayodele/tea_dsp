@@ -5,12 +5,14 @@ namespace TTModules {
   class AudioBuffer {
     public:
 
-    AudioBuffer(int fs, int blocksize,float* in, float* outp);
+    AudioBuffer();
+
+    AudioBuffer(float fs, int blocksize,float* in = NULL, float* outp = NULL);
 
     ~AudioBuffer();
 
     int blocksize;
-    int fs;
+    float fs;
     float* sampin;
     float* sampout;
 

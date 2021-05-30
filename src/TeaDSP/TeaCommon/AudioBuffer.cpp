@@ -1,8 +1,8 @@
-#include <AudioBuffer.h>
+#include "AudioBuffer.h"
 
 using namespace TTModules;
 
-AudioBuffer::AudioBuffer(int fs, int blocksize,float* in = NULL, float* outp = NULL){
+AudioBuffer::AudioBuffer(float fs=44100, int blocksize=64,float* in, float* outp){
   this->fs = fs;
   this->blocksize = blocksize;
   this->sampin = in == NULL ? new float[blocksize] : in;

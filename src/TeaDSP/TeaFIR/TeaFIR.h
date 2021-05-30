@@ -3,9 +3,13 @@ Basic Chain FIR, different filter formats like a basic IIR and Biquad will be se
 but all of them will be able to implement windows and have some form of Parks-M design when I learn how to do it.
 
 Todo: more filters
+
+Some Specs: 
+
+Resolution is 1 Hz, so allocated at least fs*sizeof(float)
 ***/
 
-#include <vector>
+#include "TeaCommon/AudioBuffer.h"
 #include <stdlib.h>
 
 namespace TTModules {
@@ -39,10 +43,12 @@ namespace TTModules {
     filtertype getType();
     void  setType(filtertype val);
 
-    void filter(float* input,float* output);
+    int filter();
 
     void enableFilter();
     void passthrough();
+
+    AudioBuffer buff;
 
     private:
 
@@ -65,8 +71,10 @@ namespace TTModules {
     int csize;
 
     //Coeffs pulled from a 64 point DFT for now. Maybe build a higher end filter later?
-    float fresp[64];
-    const int RESP_SIZE = 64;
+    float* fresp;
+    int resp_size;
+    // For Window style design, might build my own fft algo? at the least wrapping fftw3
+    fftw_plan plan;
     
     //turn filter on/off
     bool enable;
