@@ -2,7 +2,6 @@ cc_library(
     name = "TeaFIR",
     srcs = glob(["*.cpp"]),
     hdrs = glob(["*.h"]),
-    deps = ["//TeaCommon:TeaCommon"],
-    visibility = ["//consoleTests/TestBaz:__pkg__",
-                  "//Test:__pkg__"],
+    deps = ["//TeaCommon:TeaCommon","@fftw3//:fftw3.so"],
+    visibility = ["//visibility:public"],
 )

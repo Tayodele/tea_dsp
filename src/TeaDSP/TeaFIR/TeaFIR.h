@@ -6,78 +6,74 @@ Todo: more filters
 
 Some Specs: 
 
-Resolution is 1 Hz, so allocated at least fs*sizeof(float)
+Resolution is 1 Hz, so allocated at least fs*sizeof(double)
 ***/
 
-#include "TeaCommon/AudioBuffer.h"
 #include <stdlib.h>
 
-namespace TTModules {
+namespace TTModules
+{
 
-  class TeaFIR {
+  class TeaFIR
+  {
 
-    public:
-
+  public:
     TeaFIR();
 
-    TeaFIR(float afs, float ord);
+    TeaFIR(double afs = 44100, double ord = 2.);
 
     ~TeaFIR();
 
-    float getCutoff();
-    void  setCutoff(float val);
-    
+    double getCutoff();
+    void setCutoff(double val);
+
     int getOrder();
 
     // Doubles the input value to enusure order is always even
-    void  setOrder(int val);
-    
-    enum filtertype {
+    void setOrder(int val);
+
+    enum filtertype
+    {
       LOW,
       HIGH,
       BAND,
       STOP,
       //BELL, I don't know how to do this one yet
     };
-    
+
     filtertype getType();
-    void  setType(filtertype val);
+    void setType(filtertype val);
 
-    int filter();
+    void filter(double &input, double &output);
 
-    void enableFilter();
-    void passthrough();
+    // Return Response of filter
+    double *getResponse();
+    int getResponseSize();
 
-    AudioBuffer buff;
-
-    private:
-
+  private:
     void setCoeffs();
 
     void buildFilter();
 
-    void init(float afs, float ord);
- 
+    void init(double afs = 44100., double ord = 2.);
+
     filtertype type;
 
     //cutoff freq
-    float cutoff;
-    float fs;
+    double cutoff;
+    double fs;
     //length of queue, even number for symmetry (taken from a 64 point DFT)
     int order;
 
-    //array for coeffs
-    float* coeffs;
-    int csize;
+    //array for coeffs and filter buffer
+    double *coeffs;
+    double *buffer;
 
     //Coeffs pulled from a 64 point DFT for now. Maybe build a higher end filter later?
-    float* fresp;
+    double *fresp;
     int resp_size;
-    // For Window style design, might build my own fft algo? at the least wrapping fftw3
-    fftw_plan plan;
-    
+
     //turn filter on/off
     bool enable;
-
   };
 };

@@ -25,7 +25,7 @@ cc_test(
   deps = ["@googletest//googletest-release-1.10.0:gtest",
           "@googletest//googletest-release-1.10.0:gtest_main",
           "//TeaFIR:TeaFIR",
-          "//TeaCommon:TeaCommon"],
+          "//TeaCommon:TeaCommon","@fftw3//:fftw3"],
 )
 
 cc_test(
