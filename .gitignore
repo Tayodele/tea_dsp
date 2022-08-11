@@ -3,15 +3,12 @@
 Debug
 .vscode
 x64
-**/bazel-*/
-TestTones/
-teapy/
+bazel-*
+env/
 
 #files
 *.log
 *.exe
 *.tlog
 *.vst3
-*.txt
-*.code-workspace
 !requirements.txt
