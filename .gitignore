@@ -6,6 +6,7 @@ Debug
 x64
 bazel-*
 env/
+rust/target
 
 #files
 *.log
