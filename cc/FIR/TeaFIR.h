@@ -10,22 +10,41 @@ Resolution is 1 Hz, so allocated at least fs*sizeof(double)
 ***/
 
 #include <stdlib.h>
+#include <fftw3.h>
+#include "TeaCommon/conversions.h"
 
-namespace TTModules
+namespace TeaFIR
 {
 
-  class TeaFIR
+  class FIR
   {
 
   public:
-    TeaFIR();
+    FIR()
+    {
+      init();
+    }
 
-    TeaFIR(double afs = 44100, double ord = 2.);
+    FIR(double afs = 44100, double ord = 2.)
+    {
+      init(afs, ord);
+    }
 
-    ~TeaFIR();
+    ~FIR()
+    {
+      delete coeffs;
+    }
 
-    double getCutoff();
-    void setCutoff(double val);
+    double getCutoff()
+    {
+      return cutoff;
+    }
+    void setCutoff(double val)
+    {
+      cutoff = val;
+      buildFilter();
+    }
+
 
     int getOrder();
 
@@ -38,26 +57,86 @@ namespace TTModules
       HIGH,
       BAND,
       STOP,
-      //BELL, I don't know how to do this one yet
-    };
+      // I don't know how to do this one yet
+      // BELL, 
+    } type;
 
-    filtertype getType();
-    void setType(filtertype val);
-
-    void filter(double &input, double &output);
+    void filter(double &input, double &output)
+    {
+      for (auto i = order - 1; i > 0; i--)
+      {
+        buffer[i] = buffer[i - 1];
+      }
+      buffer[0] = input;
+      auto temp = 0.;
+      for (auto j = 0; j < order; j++)
+      {
+        temp += buffer[j] * coeffs[order - j - 1];
+      }
+      output = temp;
+    }
 
     // Return Response of filter
     double *getResponse();
     int getResponseSize();
 
+
   private:
-    void setCoeffs();
+    void setCoeffs()
+    {
+      int half = resp_size / 2 - order / 2;
+      for (int i = 0; i < order; i++)
+      {
+        coeffs[i] = fresp[half + i];
+      }
+    }
 
-    void buildFilter();
+    void buildFilter()
+    {
+      // Rectangle Response
+      auto resp_delta = (fs) / resp_size;
+      double *rect_resp = new double[resp_size];
+      double *fresp = new double[resp_size];
+      auto kind = fftw_r2r_kind(1);
+      unsigned flags = 0;
+      fftw_plan plan;
+      plan = fftw_plan_r2r_1d(resp_size, rect_resp, fresp, kind, flags);
+      auto mirror_len = -1;
+      for (int i = 0; i < resp_size; i++)
+      {
+        rect_resp[i] = 0;
+        if (i * resp_delta <= cutoff)
+          rect_resp[i] = 1;
+        else
+        {
+          if (mirror_len < 0)
+            mirror_len = i;
+          if (i >= resp_size - mirror_len)
+          {
+            rect_resp[i] = 1;
+            mirror_len--;
+          }
+        }
+      }
+      // IFFT
+      fftw_execute(plan);
+      // Window
 
-    void init(double afs = 44100., double ord = 2.);
+      setCoeffs();
+      fftw_destroy_plan(plan);
+    }
 
-    filtertype type;
+    void init(double afs = 44100., double ord = 2.)
+    {
+      fs = afs;
+      cutoff = 0.;
+      order = ord;
+      coeffs = new double[order];
+      buffer = new double[order];
+      //using constant for now, want to test the speed of this
+      resp_size = int(1 << 6);
+      buildFilter();
+    }
 
     //cutoff freq
     double cutoff;

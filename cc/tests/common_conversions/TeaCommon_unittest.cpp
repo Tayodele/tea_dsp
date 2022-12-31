@@ -1,7 +1,7 @@
-#include "common/conversions.h"
+#include "cc/common_conversions/conversions.h"
 #include "gtest/gtest.h"
 
-using namespace TTModules;
+using namespace TeaDSP;
 
 namespace {
 TEST(AlgTests, RoundTest) {
@@ -22,8 +22,6 @@ TEST(BPMTest, BPMConversions) {
 }
 
 TEST(VolumeTest, Decibels) {
-  float sample = 50;
-  volume(&sample, -3);
-  EXPECT_EQ(roundf(sample), 25.);
+  EXPECT_EQ(roundf(volume(50, -3)), 25.);
 }
 } // namespace
