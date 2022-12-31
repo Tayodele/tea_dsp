@@ -1,17 +1,14 @@
 #folders
 .vs
 Debug
+.DS_Store
 .vscode
 x64
-**/bazel-*/
-TestTones/
-teapy/
+bazel-*
+env/
+rust/target
 
 #files
 *.log
-*.exe
 *.tlog
-*.vst3
-*.txt
-*.code-workspace
 !requirements.txt
