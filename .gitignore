@@ -1,14 +1,1 @@
-#folders
-.vs
-Debug
-.DS_Store
 .vscode
-x64
-bazel-*
-env/
-rust/target
-
-#files
-*.log
-*.tlog
-!requirements.txt
