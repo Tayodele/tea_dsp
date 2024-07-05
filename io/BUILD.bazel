@@ -1,0 +1,8 @@
+load("//flatbuffers:defs.bzl", "rust_flatbuffer_gen")
+
+package(default_visibility = ["//visibility:public"])
+
+rust_flatbuffer_gen(
+    name = "chunk",
+    schema = ":chunk.fbs",
+)

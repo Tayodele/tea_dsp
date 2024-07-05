@@ -1,0 +1,28 @@
+load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+load(":defs.bzl", "flatc_toolchain")
+
+package(default_visibility = ["//visibility:public"])
+
+toolchain_type(name = "flatc_toolchain_type")
+
+toolchain(
+    name = "flatc_mac_toolchain",
+    # exec_compatible_with = [
+    #     "@platforms//os:macos",
+    # ],
+    # target_compatible_with = [
+    #     "@platforms//os:macos",
+    # ],
+    toolchain = ":flatc_mac",
+    toolchain_type = ":flatc_toolchain_type",
+)
+
+flatc_toolchain(
+    name = "flatc_mac",
+    binary = "@flatc_mac//:bin",
+)
+
+sh_binary(
+    name = "run_flatc",
+    srcs = ["run_flatc.sh"],
+)

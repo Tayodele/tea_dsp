@@ -1,0 +1,26 @@
+// Example IDL file for our monster's schema.
+ 
+namespace dsp;
+ 
+union ControlParam {
+  SineGenerator 
+}
+ 
+table SineGenerator {
+  gain_db:float;
+  freq_hz:float;
+  mute:bool;
+}
+
+table SampleFrame {
+  channels:ubyte;
+  samples:[float];
+}
+ 
+table Chunk {
+  control: ControlParam;
+  data: [SampleFrame];
+  bypass:bool;
+}
+
+root_type Chunk;
