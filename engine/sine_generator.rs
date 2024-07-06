@@ -10,6 +10,7 @@ struct SineGeneratorComponent {
     gain_db: f32,
     freq_hz: f32,
     phase_rad: f32,
+    channel_steps: Vec<usize>,
 }
 
 impl Component for SineGeneratorComponent {
@@ -22,15 +23,22 @@ impl Component for SineGeneratorComponent {
         self.gain_db = control_params.gain_db();
         self.freq_hz = control_params.freq_hz();
         self.phase_rad = control_params.phase_rad();
+        self.channel_steps.clear();
+        for ch in 0..frame.channels {
+            self.channel_steps.push(0);
+        }
         let wave = |step: usize| {
             let rad = (2.0 * PI) * ((step + 1) as f32) * (self.freq_hz / frame.sample_rate);
             rad.sin() * CEILING
         };
         // All samples start at 0 degrees
-        for (idx, frame) in frame.samples.iter_mut().enumerate() {
-            *frame = self
-                .gain_db
-                .attenuate(wave(idx + ((self.phase_rad / 2.0 * PI) as usize)));
+        let mut channel_mod = 0;
+        for (idx, sample) in frame.samples.iter_mut().enumerate() {
+            *sample = self.gain_db.attenuate(wave(
+                self.channel_steps[channel_mod] + ((self.phase_rad / 2.0 * PI) as usize),
+            ));
+            self.channel_steps[channel_mod] += 1;
+            channel_mod = (channel_mod + 1) % (frame.channels as usize);
         }
         Ok(())
     }
@@ -51,7 +59,7 @@ mod tests {
     }
 
     #[test]
-    fn test_sine_generator() -> anyhow::Result<()> {
+    fn test_sine_generator_simple() -> anyhow::Result<()> {
         let mut builder = FlatBufferBuilder::with_capacity(1024);
 
         let control = SineGeneratorControl::create(
@@ -89,7 +97,6 @@ mod tests {
 
         component.process_chunk(&chunk, &mut frame)?;
         let expected_max_step = rad_to_step(component.freq_hz, frame.sample_rate, PI / 2.0);
-        eprintln!("{expected_max_step}");
         assert_eq!(frame.samples[expected_max_step], f32::MAX);
 
         Ok(())
