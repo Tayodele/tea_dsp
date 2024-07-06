@@ -1,5 +1,5 @@
 {
-  "checksum": "b1bb7e76b9ff0b9741ae3c672fefd7153a55f1a1c8db6649a781f0cad843a6c8",
+  "checksum": "f26963781adb31ca06a042549179201d425c631918912acadfe05eadde2d9a61",
   "crates": {
     "aho-corasick 1.1.3": {
       "name": "aho-corasick",
@@ -834,6 +834,44 @@
       ],
       "license_file": "LICENSE-APACHE"
     },
+    "cfg_aliases 0.1.1": {
+      "name": "cfg_aliases",
+      "version": "0.1.1",
+      "package_url": "https://github.com/katharostech/cfg_aliases",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/cfg_aliases/0.1.1/download",
+          "sha256": "fd16c4719339c4530435d38e511904438d07cce7950afa3718a84ac36c10e89e"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "cfg_aliases",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "cfg_aliases",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "edition": "2018",
+        "version": "0.1.1"
+      },
+      "license": "MIT",
+      "license_ids": [
+        "MIT"
+      ],
+      "license_file": "LICENSE"
+    },
     "clang-sys 1.8.1": {
       "name": "clang-sys",
       "version": "1.8.1",
@@ -1395,6 +1433,62 @@
       ],
       "license_file": "LICENSE"
     },
+    "ctrlc 3.4.4": {
+      "name": "ctrlc",
+      "version": "3.4.4",
+      "package_url": "https://github.com/Detegr/rust-ctrlc.git",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/ctrlc/3.4.4/download",
+          "sha256": "672465ae37dc1bc6380a6547a8883d5dd397b0f1faaad4f265726cc7042a5345"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "ctrlc",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "ctrlc",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [],
+          "selects": {
+            "cfg(unix)": [
+              {
+                "id": "nix 0.28.0",
+                "target": "nix"
+              }
+            ],
+            "cfg(windows)": [
+              {
+                "id": "windows-sys 0.52.0",
+                "target": "windows_sys"
+              }
+            ]
+          }
+        },
+        "edition": "2021",
+        "version": "3.4.4"
+      },
+      "license": "MIT/Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
     "dasp_sample 0.11.0": {
       "name": "dasp_sample",
       "version": "0.11.0",
@@ -1468,12 +1562,20 @@
         "deps": {
           "common": [
             {
+              "id": "ctrlc 3.4.4",
+              "target": "ctrlc"
+            },
+            {
               "id": "flatbuffers 24.3.25",
               "target": "flatbuffers"
             },
             {
               "id": "log 0.4.22",
               "target": "log"
+            },
+            {
+              "id": "num 0.4.3",
+              "target": "num"
             },
             {
               "id": "rodio 0.19.0",
@@ -2341,69 +2443,12 @@
           "**"
         ],
         "crate_features": {
-          "common": [],
-          "selects": {
-            "aarch64-linux-android": [
-              "default",
-              "std"
-            ],
-            "aarch64-unknown-linux-gnu": [
-              "default",
-              "std"
-            ],
-            "aarch64-unknown-nixos-gnu": [
-              "default",
-              "std"
-            ],
-            "arm-unknown-linux-gnueabi": [
-              "default",
-              "std"
-            ],
-            "armv7-linux-androideabi": [
-              "default",
-              "std"
-            ],
-            "armv7-unknown-linux-gnueabi": [
-              "default",
-              "std"
-            ],
-            "i686-linux-android": [
-              "default",
-              "std"
-            ],
-            "i686-unknown-freebsd": [
-              "default",
-              "std"
-            ],
-            "i686-unknown-linux-gnu": [
-              "default",
-              "std"
-            ],
-            "powerpc-unknown-linux-gnu": [
-              "default",
-              "std"
-            ],
-            "s390x-unknown-linux-gnu": [
-              "default",
-              "std"
-            ],
-            "x86_64-linux-android": [
-              "default",
-              "std"
-            ],
-            "x86_64-unknown-freebsd": [
-              "default",
-              "std"
-            ],
-            "x86_64-unknown-linux-gnu": [
-              "default",
-              "std"
-            ],
-            "x86_64-unknown-nixos-gnu": [
-              "default",
-              "std"
-            ]
-          }
+          "common": [
+            "default",
+            "extra_traits",
+            "std"
+          ],
+          "selects": {}
         },
         "deps": {
           "common": [
@@ -2827,6 +2872,99 @@
       ],
       "license_file": null
     },
+    "nix 0.28.0": {
+      "name": "nix",
+      "version": "0.28.0",
+      "package_url": "https://github.com/nix-rust/nix",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/nix/0.28.0/download",
+          "sha256": "ab2156c4fce2f8df6c499cc1c763e4394b7482525bf2a9701c9d79d215f519e4"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "nix",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        },
+        {
+          "BuildScript": {
+            "crate_name": "build_script_build",
+            "crate_root": "build.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "nix",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "fs",
+            "process",
+            "signal"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "bitflags 2.6.0",
+              "target": "bitflags"
+            },
+            {
+              "id": "cfg-if 1.0.0",
+              "target": "cfg_if"
+            },
+            {
+              "id": "libc 0.2.155",
+              "target": "libc"
+            },
+            {
+              "id": "nix 0.28.0",
+              "target": "build_script_build"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.28.0"
+      },
+      "build_script_attrs": {
+        "data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [
+            {
+              "id": "cfg_aliases 0.1.1",
+              "target": "cfg_aliases"
+            }
+          ],
+          "selects": {}
+        }
+      },
+      "license": "MIT",
+      "license_ids": [
+        "MIT"
+      ],
+      "license_file": "LICENSE"
+    },
     "nom 7.1.3": {
       "name": "nom",
       "version": "7.1.3",
@@ -2885,6 +3023,194 @@
       ],
       "license_file": "LICENSE"
     },
+    "num 0.4.3": {
+      "name": "num",
+      "version": "0.4.3",
+      "package_url": "https://github.com/rust-num/num",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/num/0.4.3/download",
+          "sha256": "35bd024e8b2ff75562e5f34e7f4905839deb4b22955ef5e73d2fea1b9813cb23"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "num",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "num",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "default",
+            "num-bigint",
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "num-bigint 0.4.6",
+              "target": "num_bigint"
+            },
+            {
+              "id": "num-complex 0.4.6",
+              "target": "num_complex"
+            },
+            {
+              "id": "num-integer 0.1.46",
+              "target": "num_integer"
+            },
+            {
+              "id": "num-iter 0.1.45",
+              "target": "num_iter"
+            },
+            {
+              "id": "num-rational 0.4.2",
+              "target": "num_rational"
+            },
+            {
+              "id": "num-traits 0.2.19",
+              "target": "num_traits"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.4.3"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
+    "num-bigint 0.4.6": {
+      "name": "num-bigint",
+      "version": "0.4.6",
+      "package_url": "https://github.com/rust-num/num-bigint",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/num-bigint/0.4.6/download",
+          "sha256": "a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "num_bigint",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "num_bigint",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "num-integer 0.1.46",
+              "target": "num_integer"
+            },
+            {
+              "id": "num-traits 0.2.19",
+              "target": "num_traits"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.4.6"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
+    "num-complex 0.4.6": {
+      "name": "num-complex",
+      "version": "0.4.6",
+      "package_url": "https://github.com/rust-num/num-complex",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/num-complex/0.4.6/download",
+          "sha256": "73f88a1307638156682bada9d7604135552957b7818057dcef22705b4d509495"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "num_complex",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "num_complex",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "num-traits 0.2.19",
+              "target": "num_traits"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.4.6"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
     "num-derive 0.4.2": {
       "name": "num-derive",
       "version": "0.4.2",
@@ -2927,6 +3253,184 @@
             {
               "id": "syn 2.0.68",
               "target": "syn"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.4.2"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
+    "num-integer 0.1.46": {
+      "name": "num-integer",
+      "version": "0.1.46",
+      "package_url": "https://github.com/rust-num/num-integer",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/num-integer/0.1.46/download",
+          "sha256": "7969661fd2958a5cb096e56c8e1ad0444ac2bbcd0061bd28660485a44879858f"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "num_integer",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "num_integer",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "i128",
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "num-traits 0.2.19",
+              "target": "num_traits"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2018",
+        "version": "0.1.46"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
+    "num-iter 0.1.45": {
+      "name": "num-iter",
+      "version": "0.1.45",
+      "package_url": "https://github.com/rust-num/num-iter",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/num-iter/0.1.45/download",
+          "sha256": "1429034a0490724d0075ebb2bc9e875d6503c3cf69e235a8941aa757d83ef5bf"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "num_iter",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "num_iter",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "i128",
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "num-integer 0.1.46",
+              "target": "num_integer"
+            },
+            {
+              "id": "num-traits 0.2.19",
+              "target": "num_traits"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2018",
+        "version": "0.1.45"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
+    "num-rational 0.4.2": {
+      "name": "num-rational",
+      "version": "0.4.2",
+      "package_url": "https://github.com/rust-num/num-rational",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/num-rational/0.4.2/download",
+          "sha256": "f83d14da390562dca69fc84082e73e548e1ad308d24accdedd2720017cb37824"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "num_rational",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "num_rational",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "num-bigint",
+            "num-bigint-std",
+            "std"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "num-bigint 0.4.6",
+              "target": "num_bigint"
+            },
+            {
+              "id": "num-integer 0.1.46",
+              "target": "num_integer"
+            },
+            {
+              "id": "num-traits 0.2.19",
+              "target": "num_traits"
             }
           ],
           "selects": {}
@@ -2984,10 +3488,23 @@
         ],
         "crate_features": {
           "common": [
-            "default",
+            "i128",
             "std"
           ],
-          "selects": {}
+          "selects": {
+            "aarch64-linux-android": [
+              "default"
+            ],
+            "armv7-linux-androideabi": [
+              "default"
+            ],
+            "i686-linux-android": [
+              "default"
+            ],
+            "x86_64-linux-android": [
+              "default"
+            ]
+          }
         },
         "deps": {
           "common": [
@@ -5717,6 +6234,18 @@
         "compile_data_glob": [
           "**"
         ],
+        "crate_features": {
+          "common": [
+            "Win32",
+            "Win32_Foundation",
+            "Win32_Security",
+            "Win32_System",
+            "Win32_System_Console",
+            "Win32_System_Threading",
+            "default"
+          ],
+          "selects": {}
+        },
         "deps": {
           "common": [
             {
@@ -7215,8 +7744,10 @@
     "x86_64-uwp-windows-msvc": []
   },
   "direct_deps": [
+    "ctrlc 3.4.4",
     "flatbuffers 24.3.25",
     "log 0.4.22",
+    "num 0.4.3",
     "rodio 0.19.0",
     "thiserror 1.0.61"
   ],

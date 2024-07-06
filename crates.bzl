@@ -13,4 +13,10 @@ EXTERNAL_CRATES = {
     "log": crate.spec(
         version = "0",
     ),
+    "ctrlc": crate.spec(
+        version = "3",
+    ),
+    "num": crate.spec(
+        version = "0",
+    ),
 }

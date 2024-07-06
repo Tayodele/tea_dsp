@@ -1,8 +1,17 @@
 load("//flatbuffers:defs.bzl", "rust_flatbuffer_gen")
+load("//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_flatbuffer_gen(
-    name = "chunk",
+    name = "chunk_generated",
     schema = ":chunk.fbs",
+)
+
+rust_library(
+    name = "chunk",
+    srcs = [":chunk_generated"],
+    deps = [
+        "@crates_io//:flatbuffers",
+    ],
 )

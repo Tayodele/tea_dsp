@@ -13,13 +13,13 @@ table SineGenerator {
 }
 
 table SampleFrame {
-  channels:ubyte;
+  channels:short;
   samples:[float];
 }
  
 table Chunk {
   control: ControlParam;
-  data: [SampleFrame];
+  data: SampleFrame;
   bypass:bool;
 }
 

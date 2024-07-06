@@ -4,5 +4,12 @@ package(default_visibility = ["//visibility:public"])
 
 rust_library(
     name = "engine",
-    # deps = ["@crates_io//:flatbuffers"],
+    deps = [
+        "//io:chunk",
+        "@crates_io//:ctrlc",
+        "@crates_io//:flatbuffers",
+        "@crates_io//:log",
+        "@crates_io//:num",
+        "@crates_io//:thiserror",
+    ],
 )
