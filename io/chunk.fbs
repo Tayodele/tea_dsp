@@ -3,24 +3,31 @@
 namespace dsp;
  
 union ControlParam {
-  SineGenerator 
+  SineGeneratorControl,
+  Telemetry
 }
  
-table SineGenerator {
+table SineGeneratorControl {
   gain_db:float;
   freq_hz:float;
-  mute:bool;
+  phase_rad:float;
+}
+
+table Telemetry {
+  per_component_latency:[int];
+  input_latency:int;
+  output_latency:int;
 }
 
 table SampleFrame {
   channels:short;
+  sample_rate:float;
   samples:[float];
 }
  
 table Chunk {
   control: ControlParam;
   data: SampleFrame;
-  bypass:bool;
 }
 
 root_type Chunk;

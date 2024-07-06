@@ -7,12 +7,12 @@ toolchain_type(name = "flatc_toolchain_type")
 
 toolchain(
     name = "flatc_mac_toolchain",
-    # exec_compatible_with = [
-    #     "@platforms//os:macos",
-    # ],
-    # target_compatible_with = [
-    #     "@platforms//os:macos",
-    # ],
+    exec_compatible_with = [
+        "@platforms//os:macos",
+    ],
+    target_compatible_with = [
+        "@platforms//os:macos",
+    ],
     toolchain = ":flatc_mac",
     toolchain_type = ":flatc_toolchain_type",
 )

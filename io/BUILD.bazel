@@ -15,3 +15,13 @@ rust_library(
         "@crates_io//:flatbuffers",
     ],
 )
+
+rust_library(
+    name = "io",
+    deps = [
+        ":chunk",
+        "//engine",
+        "@crates_io//:anyhow",
+        "@crates_io//:flatbuffers",
+    ],
+)

@@ -6,6 +6,7 @@ rust_library(
     name = "engine",
     deps = [
         "//io:chunk",
+        "@crates_io//:anyhow",
         "@crates_io//:ctrlc",
         "@crates_io//:flatbuffers",
         "@crates_io//:log",
