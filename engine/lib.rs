@@ -64,9 +64,9 @@ pub trait Component {
     fn process_chunk(&mut self, chunk: &Chunk<'_>, frame: &mut Frame) -> AudioResult<()>;
 }
 
-fn run_engine<T: EngineSource, U: EngineSink>(
+pub fn run_engine<T: EngineSource, U: EngineSink>(
     stream_input: &mut T,
-    control_rx: &mut U,
+    stream_output: &mut U,
     components: &mut [impl Component + Sized],
     sample_rate: f32,
     channels: u16,
@@ -89,7 +89,7 @@ fn run_engine<T: EngineSource, U: EngineSink>(
         for component in components.iter_mut() {
             component.process_chunk(&chunk, &mut frame)?;
         }
-        control_rx.send_buffer(&frame)?;
+        stream_output.send_buffer(&frame)?;
     }
 
     Ok(())

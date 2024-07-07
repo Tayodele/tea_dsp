@@ -6,7 +6,7 @@ use std::f32::consts::PI;
 const CEILING: f32 = f32::MAX;
 
 #[derive(Default)]
-struct SineGeneratorComponent {
+pub struct SineGeneratorComponent {
     gain_db: f32,
     freq_hz: f32,
     phase_rad: f32,

@@ -7,6 +7,9 @@ EXTERNAL_CRATES = {
     "ctrlc": crate.spec(
         version = "3",
     ),
+    "clap": crate.spec(
+        version = "3",
+    ),
     "flatbuffers": crate.spec(
         version = "24",
     ),
@@ -21,5 +24,8 @@ EXTERNAL_CRATES = {
     ),
     "thiserror": crate.spec(
         version = "1",
+    ),
+    "tracing-subscriber": crate.spec(
+        version = "0",
     ),
 }

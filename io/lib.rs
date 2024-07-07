@@ -10,7 +10,7 @@ use std::net;
 
 const MAX_CHUNK_SIZE: usize = 3 * 1024 * 1024;
 
-struct TcpSource {
+pub struct TcpSource {
     socket: net::TcpListener,
     stream: net::TcpStream,
     addr: net::SocketAddr,
@@ -18,7 +18,7 @@ struct TcpSource {
 }
 
 impl TcpSource {
-    fn open() -> anyhow::Result<Self> {
+    pub fn open() -> anyhow::Result<Self> {
         let socket = net::TcpListener::bind("127.0.0.1:0")?;
         let (stream, addr) = socket.accept()?;
         Ok(Self {
@@ -27,6 +27,10 @@ impl TcpSource {
             addr,
             chunk_buffer: vec![0; MAX_CHUNK_SIZE].into_boxed_slice(),
         })
+    }
+
+    pub fn get_addr(&self) -> net::SocketAddr {
+        self.addr
     }
 }
 
@@ -39,13 +43,13 @@ impl EngineSource for TcpSource {
     }
 }
 
-struct TcpSink {
+pub struct TcpSink {
     stream: net::TcpStream,
     addr: net::SocketAddr,
 }
 
 impl TcpSink {
-    fn open(addr: net::SocketAddr) -> anyhow::Result<Self> {
+    pub fn open(addr: net::SocketAddr) -> anyhow::Result<Self> {
         let stream = net::TcpStream::connect(&addr)?;
         Ok(Self { stream, addr })
     }
