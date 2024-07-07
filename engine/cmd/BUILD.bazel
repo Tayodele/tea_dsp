@@ -1,0 +1,16 @@
+load("//rust:defs.bzl", "rust_library")
+
+package(default_visibility = ["//visibility:public"])
+
+rust_library(
+    name = "simple_sine_engine",
+    deps = [
+        "//engine",
+        "@crates_io//:anyhow",
+        "@crates_io//:clap",
+        "@crates_io//:log",
+        "@crates_io//:num",
+        "@crates_io//:thiserror",
+        "@crates_io//:tracing_subscr",
+    ],
+)
