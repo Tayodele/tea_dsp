@@ -53,13 +53,14 @@ mod tests {
         SineGeneratorControl, SineGeneratorControlArgs,
     };
     use flatbuffers::FlatBufferBuilder;
+    use rstest::rstest;
 
     fn rad_to_step(freq: f32, sample_rate: f32, rad: f32, channels: usize) -> usize {
         let steps_per_pi = sample_rate / freq;
         (((rad / (2.0 * PI)) * steps_per_pi) as usize) * channels
     }
 
-    #[test]
+    #[rstest]
     fn test_sine_generator_simple() -> anyhow::Result<()> {
         let channels: u16 = 1;
         let phase_rad: f32 = PI / 3.0;

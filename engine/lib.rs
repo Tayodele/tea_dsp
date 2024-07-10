@@ -6,6 +6,7 @@ use std::sync::atomic::Ordering;
 use std::sync::Arc;
 
 pub mod error;
+pub mod io;
 pub mod sine_generator;
 
 use crate::error::{AudioError, AudioResult};

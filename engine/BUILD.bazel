@@ -4,9 +4,13 @@ package(default_visibility = ["//visibility:public"])
 
 rust_library(
     name = "engine",
+    test_deps = [
+        "@crates_io//:rstest",
+    ],
     deps = [
         "//io:chunk",
         "@crates_io//:anyhow",
+        "@crates_io//:byteorder",
         "@crates_io//:ctrlc",
         "@crates_io//:flatbuffers",
         "@crates_io//:log",

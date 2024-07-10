@@ -1,1 +1,8 @@
+common --noenable_bzlmod
+
+common --color=yes
+
+build --features=symlink-exec-root
+build --nolegacy_external_runfiles
+
 test --test_output=errors

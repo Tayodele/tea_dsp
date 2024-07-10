@@ -18,8 +18,8 @@ pub struct TcpSource {
 }
 
 impl TcpSource {
-    pub fn open() -> anyhow::Result<Self> {
-        let socket = net::TcpListener::bind("127.0.0.1:0")?;
+    pub fn open(addr: impl net::ToSocketAddrs) -> anyhow::Result<Self> {
+        let socket = net::TcpListener::bind(&addr)?;
         let (stream, addr) = socket.accept()?;
         Ok(Self {
             socket,
@@ -51,6 +51,7 @@ pub struct TcpSink {
 impl TcpSink {
     pub fn open(addr: net::SocketAddr) -> anyhow::Result<Self> {
         let stream = net::TcpStream::connect(&addr)?;
+        stream.set_nodelay(true);
         Ok(Self { stream, addr })
     }
 }
@@ -86,7 +87,7 @@ impl EngineSink for TcpSink {
                 data: Some(sample_frame),
             },
         );
-        builder.finish(chunk, None);
+        builder.finish_size_prefixed(chunk, None);
         let buf = builder.finished_data();
 
         self.stream.write_all(&buf)?;
