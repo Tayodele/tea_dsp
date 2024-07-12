@@ -15,3 +15,17 @@ rust_binary(
         "@crates_io//:tracing-subscriber",
     ],
 )
+
+rust_binary(
+    name = "test_engine",
+    deps = [
+        "//engine",
+        "//io",
+        "@crates_io//:anyhow",
+        "@crates_io//:clap",
+        "@crates_io//:log",
+        "@crates_io//:num",
+        "@crates_io//:thiserror",
+        "@crates_io//:tracing-subscriber",
+    ],
+)

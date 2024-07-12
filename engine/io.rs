@@ -1,9 +1,52 @@
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 use chunk::dsp::{root_as_chunk, Chunk};
 use std::io::Write;
+use flatbuffers::FlatBufferBuilder;
 
 const MESSAGE_PREFIX_STRING: &'static str = "TEADSPCHUNK";
 const MESSAGE_PREFIX_LEN: usize = MESSAGE_PREFIX_STRING.len() + core::mem::size_of::<u32>();
+
+pub struct ChunkMessageBuilder<'chunk>{
+  builder: FlatBufferBuilder<'chunk>,
+  buf: Vec<u8>,
+}
+
+impl<'chunk> From<FlatBufferBuilder<'chunk>> for ChunkMessageBuilder<'chunk> {
+  fn from(builder: FlatBufferBuilder<'chunk>) -> ChunkMessageBuilder<'chunk> {
+    ChunkMessageBuilder {
+      builder,
+      buf: Vec::with_capacity(MESSAGE_PREFIX_LEN),
+    }
+  }
+}
+
+
+impl<'chunk> core::ops::Deref for ChunkMessageBuilder<'chunk> {
+  type Target = FlatBufferBuilder<'chunk>;
+
+  fn deref(&self) -> &Self::Target {
+      &self.builder
+  }
+}
+
+impl<'chunk> core::ops::DerefMut for ChunkMessageBuilder<'chunk> {
+
+  fn deref_mut(&mut self) -> &mut Self::Target {
+    &mut self.builder
+  }
+}
+
+impl<'chunk> ChunkMessageBuilder<'chunk> {
+  pub fn finish_message(&mut self) -> &[u8] {
+    let message = ChunkMessage::from(self.builder.finished_data());
+    self.buf.clear();
+    self.buf.extend_from_slice(message.get_prefix().as_slice());
+    self.buf.extend_from_slice(message.raw);
+    self.buf.as_slice()
+  }
+}
+
+
 
 #[derive(Debug, PartialEq)]
 pub struct ChunkMessage<'chunk> {

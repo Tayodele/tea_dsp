@@ -1,19 +1,36 @@
+load("@bazel_skylib//rules:run_binary.bzl", "run_binary")
 load("//rust:defs.bzl", "rust_binary")
 
 package(default_visibility = ["//visibility:public"])
 
-rust_flatbuffer_gen(
-    name = "chunk_generated",
-    schema = ":chunk.fbs",
-)
-
 rust_binary(
-    name = "io",
+    name = "tcp_latency_test",
+    # data = [
+    #     "//engine/cmd:test_engine",
+    # ],
+    env = {
+        "TEST": "TEST",
+    },
     deps = [
         "//engine",
         "//io",
         "//io:chunk",
         "@crates_io//:anyhow",
         "@crates_io//:flatbuffers",
+        "@crates_io//:log",
+        "@crates_io//:tracing-subscriber",
     ],
+)
+
+sh_binary(
+    name = "latency_test",
+    srcs = ["latency_test.sh"],
+    data = [
+        ":tcp_latency_test",
+        "//engine/cmd:test_engine",
+    ],
+    env = {
+        "TEST_ENGINE": "$(execpath //engine/cmd:test_engine)",
+        "LATENCY_TEST": "$(execpath :tcp_latency_test)",
+    },
 )

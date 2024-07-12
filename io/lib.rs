@@ -4,14 +4,16 @@ use chunk::dsp::{
     root_as_chunk, Chunk, ChunkArgs, ControlParam, SampleFrame, SampleFrameArgs, Telemetry,
     TelemetryArgs,
 };
-use engine::{EngineSink, EngineSource, Frame};
+use engine::io::ChunkMessageBuilder;
+use engine::{EngineSink, EngineSource, EngineTelemetry, Frame};
 use std::io::{Read, Write};
 use std::net;
+use std::ops::DerefMut;
 
 const MAX_CHUNK_SIZE: usize = 3 * 1024 * 1024;
 
 pub struct TcpSource {
-    socket: net::TcpListener,
+    _socket: net::TcpListener,
     stream: net::TcpStream,
     addr: net::SocketAddr,
     chunk_buffer: Box<[u8]>,
@@ -22,7 +24,7 @@ impl TcpSource {
         let socket = net::TcpListener::bind(&addr)?;
         let (stream, addr) = socket.accept()?;
         Ok(Self {
-            socket,
+            _socket: socket,
             stream,
             addr,
             chunk_buffer: vec![0; MAX_CHUNK_SIZE].into_boxed_slice(),
@@ -45,42 +47,51 @@ impl EngineSource for TcpSource {
 
 pub struct TcpSink {
     stream: net::TcpStream,
-    addr: net::SocketAddr,
+    _addr: net::SocketAddr,
 }
 
 impl TcpSink {
     pub fn open(addr: net::SocketAddr) -> anyhow::Result<Self> {
         let stream = net::TcpStream::connect(&addr)?;
-        stream.set_nodelay(true);
-        Ok(Self { stream, addr })
+        stream.set_nodelay(true)?;
+        Ok(Self {
+            stream,
+            _addr: addr,
+        })
     }
 }
 
 impl EngineSink for TcpSink {
-    fn send_buffer(&mut self, frame: &Frame) -> anyhow::Result<()> {
-        let mut builder = flatbuffers::FlatBufferBuilder::with_capacity(1024);
+    fn send_buffer(
+        &mut self,
+        builder: &mut ChunkMessageBuilder,
+        frame: &Frame,
+        telemetry: &EngineTelemetry,
+    ) -> anyhow::Result<()> {
+        builder.reset();
 
         let samples = builder.create_vector(&frame.samples);
         let sample_frame = SampleFrame::create(
-            &mut builder,
+            builder.deref_mut(),
             &SampleFrameArgs {
                 channels: frame.channels as i16,
                 sample_rate: frame.sample_rate,
                 samples: Some(samples),
             },
         );
-        let per_component_latency = builder.create_vector(&[0]);
+        let per_component_latency =
+            builder.create_vector(telemetry.per_component_latency.as_slice());
         let telemetry = Telemetry::create(
-            &mut builder,
+            builder.deref_mut(),
             &TelemetryArgs {
                 per_component_latency: Some(per_component_latency),
-                input_latency: 0,
-                output_latency: 0,
+                input_latency: telemetry.input_latency,
+                output_latency: telemetry.output_latency,
             },
         );
 
         let chunk = Chunk::create(
-            &mut builder,
+            builder.deref_mut(),
             &ChunkArgs {
                 control_type: ControlParam::Telemetry,
                 control: Some(telemetry.as_union_value()),
@@ -88,7 +99,7 @@ impl EngineSink for TcpSink {
             },
         );
         builder.finish_size_prefixed(chunk, None);
-        let buf = builder.finished_data();
+        let buf = builder.finish_message();
 
         self.stream.write_all(&buf)?;
 

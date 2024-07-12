@@ -1,15 +1,19 @@
 //! Library for an out-of-process DSP engine that communicates via flatbuffers over pipes.
 
-use chunk::dsp::Chunk;
+use chunk::dsp::{Chunk, Telemetry};
 use core::sync::atomic::AtomicBool;
+use core::time::Duration;
+use flatbuffers::FlatBufferBuilder;
 use std::sync::atomic::Ordering;
 use std::sync::Arc;
+use std::time::Instant;
 
 pub mod error;
 pub mod io;
 pub mod sine_generator;
 
 use crate::error::{AudioError, AudioResult};
+use crate::io::ChunkMessageBuilder;
 
 type SampleItem = f32;
 
@@ -51,6 +55,13 @@ impl Frame {
     }
 }
 
+#[derive(Default)]
+pub struct EngineTelemetry {
+    pub per_component_latency: Vec<i32>,
+    pub input_latency: i32,
+    pub output_latency: i32,
+}
+
 /// Implementations for a source of data messages to the engine.
 pub trait EngineSource {
     fn read_buffer<'chunk>(&'chunk mut self) -> anyhow::Result<Chunk<'chunk>>;
@@ -58,7 +69,12 @@ pub trait EngineSource {
 
 /// Implementations for a sink of data messages to the engine.
 pub trait EngineSink {
-    fn send_buffer(&mut self, frame: &Frame) -> anyhow::Result<()>;
+    fn send_buffer(
+        &mut self,
+        builder: &mut ChunkMessageBuilder,
+        frame: &Frame,
+        telemetry: &EngineTelemetry,
+    ) -> anyhow::Result<()>;
 }
 
 pub trait Component {
@@ -81,16 +97,32 @@ pub fn run_engine<T: EngineSource, U: EngineSink>(
     .expect("Error setting Ctrl-C handler");
 
     let mut frame = Frame::new(sample_rate, channels, 256);
+    let mut output_latency = 0;
+    let mut telemetry = EngineTelemetry {
+        per_component_latency: Vec::with_capacity(components.len()),
+        input_latency: 0,
+        output_latency: 0,
+    };
+    let mut builder = ChunkMessageBuilder::from(FlatBufferBuilder::with_capacity(1024));
     loop {
         if signal.load(Ordering::Relaxed) {
             break;
         }
+        let start = Instant::now();
         let chunk = stream_input.read_buffer()?;
         frame.parse_chunk(&chunk)?;
+        telemetry.input_latency = start.elapsed().as_micros() as i32;
+        telemetry.per_component_latency.clear();
         for component in components.iter_mut() {
+            let start = Instant::now();
             component.process_chunk(&chunk, &mut frame)?;
+            telemetry
+                .per_component_latency
+                .push(start.elapsed().as_micros() as i32);
         }
-        stream_output.send_buffer(&frame)?;
+        let start = Instant::now();
+        stream_output.send_buffer(&mut builder, &frame, &telemetry)?;
+        telemetry.output_latency = start.elapsed().as_micros() as i32;
     }
 
     Ok(())

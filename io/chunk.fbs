@@ -4,8 +4,11 @@ namespace dsp;
  
 union ControlParam {
   SineGeneratorControl,
-  Telemetry
+  Telemetry,
+  TestControl,
 }
+
+table TestControl {}
  
 table SineGeneratorControl {
   gain_db:float;
