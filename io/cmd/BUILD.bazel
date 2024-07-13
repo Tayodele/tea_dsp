@@ -10,6 +10,7 @@ rust_binary(
         "//io:chunk",
         "@crates_io//:anyhow",
         "@crates_io//:flatbuffers",
+        "@crates_io//:indicatif",
         "@crates_io//:log",
         "@crates_io//:tracing-subscriber",
     ],

@@ -14,6 +14,9 @@ EXTERNAL_CRATES = {
         version = "3",
         features = ["derive"],
     ),
+    "indicatif": crate.spec(
+        version = "0",
+    ),
     "eframe": crate.spec(
         version = "0",
         default_features = False,

@@ -1,5 +1,5 @@
 {
-  "checksum": "ff3023cace44ec27699fd89f618636bef1aeb153948f63b77d8c049052b8c378",
+  "checksum": "29694236b405b1ce1abf57fadffd4edc68cf71c2774774ac0811c49d69abc0b5",
   "crates": {
     "ab_glyph 0.2.28": {
       "name": "ab_glyph",
@@ -2923,6 +2923,79 @@
       ],
       "license_file": "LICENSE-APACHE"
     },
+    "console 0.15.8": {
+      "name": "console",
+      "version": "0.15.8",
+      "package_url": "https://github.com/console-rs/console",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/console/0.15.8/download",
+          "sha256": "0e1f83fc076bd6dd27517eacdf25fef6c4dfe5f1d7448bafaaf3a26f13b5e4eb"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "console",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "console",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "ansi-parsing",
+            "unicode-width"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "lazy_static 1.5.0",
+              "target": "lazy_static"
+            },
+            {
+              "id": "libc 0.2.155",
+              "target": "libc"
+            },
+            {
+              "id": "unicode-width 0.1.13",
+              "target": "unicode_width"
+            }
+          ],
+          "selects": {
+            "cfg(windows)": [
+              {
+                "id": "encode_unicode 0.3.6",
+                "target": "encode_unicode"
+              },
+              {
+                "id": "windows-sys 0.52.0",
+                "target": "windows_sys"
+              }
+            ]
+          }
+        },
+        "edition": "2018",
+        "version": "0.15.8"
+      },
+      "license": "MIT",
+      "license_ids": [
+        "MIT"
+      ],
+      "license_file": "LICENSE"
+    },
     "core-foundation 0.9.4": {
       "name": "core-foundation",
       "version": "0.9.4",
@@ -3804,6 +3877,10 @@
             {
               "id": "flume 0.11.0",
               "target": "flume"
+            },
+            {
+              "id": "indicatif 0.17.8",
+              "target": "indicatif"
             },
             {
               "id": "log 0.4.22",
@@ -5106,6 +5183,52 @@
         "MIT"
       ],
       "license_file": null
+    },
+    "encode_unicode 0.3.6": {
+      "name": "encode_unicode",
+      "version": "0.3.6",
+      "package_url": "https://github.com/tormol/encode_unicode",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/encode_unicode/0.3.6/download",
+          "sha256": "a357d28ed41a50f9c765dbfe56cbc04a64e53e5fc58ba79fbc34c10ef3df831f"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "encode_unicode",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "encode_unicode",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "default",
+            "std"
+          ],
+          "selects": {}
+        },
+        "edition": "2015",
+        "version": "0.3.6"
+      },
+      "license": "MIT/Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
     },
     "encoding_rs 0.8.34": {
       "name": "encoding_rs",
@@ -7730,6 +7853,126 @@
       ],
       "license_file": "LICENSE-APACHE"
     },
+    "indicatif 0.17.8": {
+      "name": "indicatif",
+      "version": "0.17.8",
+      "package_url": "https://github.com/console-rs/indicatif",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/indicatif/0.17.8/download",
+          "sha256": "763a5a8f45087d6bcea4222e7b72c291a054edf80e4ef6efd2a4979878c7bea3"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "indicatif",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "indicatif",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "default",
+            "unicode-width"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "console 0.15.8",
+              "target": "console"
+            },
+            {
+              "id": "number_prefix 0.4.0",
+              "target": "number_prefix"
+            },
+            {
+              "id": "portable-atomic 1.6.0",
+              "target": "portable_atomic"
+            },
+            {
+              "id": "unicode-width 0.1.13",
+              "target": "unicode_width"
+            }
+          ],
+          "selects": {
+            "cfg(target_arch = \"wasm32\")": [
+              {
+                "id": "instant 0.1.13",
+                "target": "instant"
+              }
+            ]
+          }
+        },
+        "edition": "2021",
+        "version": "0.17.8"
+      },
+      "license": "MIT",
+      "license_ids": [
+        "MIT"
+      ],
+      "license_file": "LICENSE"
+    },
+    "instant 0.1.13": {
+      "name": "instant",
+      "version": "0.1.13",
+      "package_url": "https://github.com/sebcrozet/instant",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/instant/0.1.13/download",
+          "sha256": "e0242819d153cba4b4b05a5a8f2a7e9bbf97b6055b2a002b395c96b5ff3c0222"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "instant",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "instant",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "deps": {
+          "common": [
+            {
+              "id": "cfg-if 1.0.0",
+              "target": "cfg_if"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2018",
+        "version": "0.1.13"
+      },
+      "license": "BSD-3-Clause",
+      "license_ids": [
+        "BSD-3-Clause"
+      ],
+      "license_file": "LICENSE"
+    },
     "itertools 0.12.1": {
       "name": "itertools",
       "version": "0.12.1",
@@ -8245,10 +8488,82 @@
         "crate_features": {
           "common": [
             "default",
-            "extra_traits",
             "std"
           ],
-          "selects": {}
+          "selects": {
+            "aarch64-apple-darwin": [
+              "extra_traits"
+            ],
+            "aarch64-apple-ios": [
+              "extra_traits"
+            ],
+            "aarch64-apple-ios-sim": [
+              "extra_traits"
+            ],
+            "aarch64-fuchsia": [
+              "extra_traits"
+            ],
+            "aarch64-linux-android": [
+              "extra_traits"
+            ],
+            "aarch64-unknown-linux-gnu": [
+              "extra_traits"
+            ],
+            "aarch64-unknown-nixos-gnu": [
+              "extra_traits"
+            ],
+            "aarch64-unknown-nto-qnx710": [
+              "extra_traits"
+            ],
+            "arm-unknown-linux-gnueabi": [
+              "extra_traits"
+            ],
+            "armv7-linux-androideabi": [
+              "extra_traits"
+            ],
+            "armv7-unknown-linux-gnueabi": [
+              "extra_traits"
+            ],
+            "i686-apple-darwin": [
+              "extra_traits"
+            ],
+            "i686-linux-android": [
+              "extra_traits"
+            ],
+            "i686-unknown-freebsd": [
+              "extra_traits"
+            ],
+            "i686-unknown-linux-gnu": [
+              "extra_traits"
+            ],
+            "powerpc-unknown-linux-gnu": [
+              "extra_traits"
+            ],
+            "s390x-unknown-linux-gnu": [
+              "extra_traits"
+            ],
+            "x86_64-apple-darwin": [
+              "extra_traits"
+            ],
+            "x86_64-apple-ios": [
+              "extra_traits"
+            ],
+            "x86_64-fuchsia": [
+              "extra_traits"
+            ],
+            "x86_64-linux-android": [
+              "extra_traits"
+            ],
+            "x86_64-unknown-freebsd": [
+              "extra_traits"
+            ],
+            "x86_64-unknown-linux-gnu": [
+              "extra_traits"
+            ],
+            "x86_64-unknown-nixos-gnu": [
+              "extra_traits"
+            ]
+          }
         },
         "deps": {
           "common": [
@@ -10225,6 +10540,51 @@
       ],
       "license_file": "LICENSE-APACHE"
     },
+    "number_prefix 0.4.0": {
+      "name": "number_prefix",
+      "version": "0.4.0",
+      "package_url": "https://github.com/ogham/rust-number-prefix",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/number_prefix/0.4.0/download",
+          "sha256": "830b246a0e5f20af87141b25c173cd1b609bd7779a4617d6ec582abaf90870f3"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "number_prefix",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "number_prefix",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "default",
+            "std"
+          ],
+          "selects": {}
+        },
+        "edition": "2015",
+        "version": "0.4.0"
+      },
+      "license": "MIT",
+      "license_ids": [
+        "MIT"
+      ],
+      "license_file": null
+    },
     "objc-sys 0.3.5": {
       "name": "objc-sys",
       "version": "0.3.5",
@@ -11822,6 +12182,78 @@
         },
         "edition": "2021",
         "version": "3.7.2"
+      },
+      "license": "Apache-2.0 OR MIT",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
+    "portable-atomic 1.6.0": {
+      "name": "portable-atomic",
+      "version": "1.6.0",
+      "package_url": "https://github.com/taiki-e/portable-atomic",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/portable-atomic/1.6.0/download",
+          "sha256": "7170ef9988bc169ba16dd36a7fa041e5c4cbeb6a35b76d4c03daded371eae7c0"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "portable_atomic",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        },
+        {
+          "BuildScript": {
+            "crate_name": "build_script_build",
+            "crate_root": "build.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "portable_atomic",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "default",
+            "fallback"
+          ],
+          "selects": {}
+        },
+        "deps": {
+          "common": [
+            {
+              "id": "portable-atomic 1.6.0",
+              "target": "build_script_build"
+            }
+          ],
+          "selects": {}
+        },
+        "edition": "2018",
+        "version": "1.6.0"
+      },
+      "build_script_attrs": {
+        "data_glob": [
+          "**"
+        ]
       },
       "license": "Apache-2.0 OR MIT",
       "license_ids": [
@@ -16073,6 +16505,51 @@
       ],
       "license_file": "LICENSE-APACHE"
     },
+    "unicode-width 0.1.13": {
+      "name": "unicode-width",
+      "version": "0.1.13",
+      "package_url": "https://github.com/unicode-rs/unicode-width",
+      "repository": {
+        "Http": {
+          "url": "https://static.crates.io/crates/unicode-width/0.1.13/download",
+          "sha256": "0336d538f7abc86d282a4189614dfaa90810dfc2c6f6427eaf88e16311dd225d"
+        }
+      },
+      "targets": [
+        {
+          "Library": {
+            "crate_name": "unicode_width",
+            "crate_root": "src/lib.rs",
+            "srcs": {
+              "allow_empty": false,
+              "include": [
+                "**/*.rs"
+              ]
+            }
+          }
+        }
+      ],
+      "library_target_name": "unicode_width",
+      "common_attrs": {
+        "compile_data_glob": [
+          "**"
+        ],
+        "crate_features": {
+          "common": [
+            "default"
+          ],
+          "selects": {}
+        },
+        "edition": "2021",
+        "version": "0.1.13"
+      },
+      "license": "MIT OR Apache-2.0",
+      "license_ids": [
+        "Apache-2.0",
+        "MIT"
+      ],
+      "license_file": "LICENSE-APACHE"
+    },
     "url 2.5.2": {
       "name": "url",
       "version": "2.5.2",
@@ -18518,6 +18995,9 @@
             "Win32_System_Console",
             "Win32_System_SystemInformation",
             "Win32_System_Threading",
+            "Win32_UI",
+            "Win32_UI_Input",
+            "Win32_UI_Input_KeyboardAndMouse",
             "default"
           ],
           "selects": {}
@@ -22824,6 +23304,7 @@
     "egui 0.28.1",
     "flatbuffers 24.3.25",
     "flume 0.11.0",
+    "indicatif 0.17.8",
     "log 0.4.22",
     "num 0.4.3",
     "rodio 0.19.0",

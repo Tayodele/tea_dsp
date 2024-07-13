@@ -15,7 +15,7 @@ impl<'chunk> From<FlatBufferBuilder<'chunk>> for ChunkMessageBuilder<'chunk> {
   fn from(builder: FlatBufferBuilder<'chunk>) -> ChunkMessageBuilder<'chunk> {
     ChunkMessageBuilder {
       builder,
-      buf: Vec::with_capacity(MESSAGE_PREFIX_LEN),
+      buf: Vec::with_capacity(MESSAGE_PREFIX_LEN + 2048),
     }
   }
 }
