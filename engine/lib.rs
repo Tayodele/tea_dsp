@@ -63,12 +63,10 @@ pub struct EngineTelemetry {
 }
 
 /// Implementations for a source of data messages to the engine.
-pub trait EngineSource {
-    fn read_buffer<'chunk>(&'chunk mut self) -> anyhow::Result<Chunk<'chunk>>;
-}
-
 /// Implementations for a sink of data messages to the engine.
-pub trait EngineSink {
+pub trait EngineIO {
+    fn read_buffer<'chunk>(&'chunk mut self) -> anyhow::Result<Chunk<'chunk>>;
+
     fn send_buffer(
         &mut self,
         builder: &mut ChunkMessageBuilder,
@@ -81,14 +79,13 @@ pub trait Component {
     fn process_chunk(&mut self, chunk: &Chunk<'_>, frame: &mut Frame) -> AudioResult<()>;
 }
 
-pub fn run_engine<T: EngineSource, U: EngineSink>(
-    stream_input: &mut T,
-    stream_output: &mut U,
+pub fn run_engine<T: EngineIO>(
+    stream: &mut T,
     components: &mut [impl Component + Sized],
     sample_rate: f32,
     channels: u16,
 ) -> AudioResult<()> {
-    let signal = Arc::new(AtomicBool::new(true));
+    let signal = Arc::new(AtomicBool::new(false));
     let ctrlc_signal = signal.clone();
 
     ctrlc::set_handler(move || {
@@ -109,19 +106,25 @@ pub fn run_engine<T: EngineSource, U: EngineSink>(
             break;
         }
         let start = Instant::now();
-        let chunk = stream_input.read_buffer()?;
-        frame.parse_chunk(&chunk)?;
-        telemetry.input_latency = start.elapsed().as_micros() as i32;
-        telemetry.per_component_latency.clear();
-        for component in components.iter_mut() {
-            let start = Instant::now();
-            component.process_chunk(&chunk, &mut frame)?;
-            telemetry
-                .per_component_latency
-                .push(start.elapsed().as_micros() as i32);
+        let chunk = match stream.read_buffer() {
+            Ok(c) => c,
+            Err(e) => {
+                continue;
+            }
+        };
+        if frame.parse_chunk(&chunk).is_ok() {
+            telemetry.input_latency = start.elapsed().as_micros() as i32;
+            telemetry.per_component_latency.clear();
+            for component in components.iter_mut() {
+                let start = Instant::now();
+                component.process_chunk(&chunk, &mut frame)?;
+                telemetry
+                    .per_component_latency
+                    .push(start.elapsed().as_micros() as i32);
+            }
         }
         let start = Instant::now();
-        stream_output.send_buffer(&mut builder, &frame, &telemetry)?;
+        stream.send_buffer(&mut builder, &frame, &telemetry)?;
         telemetry.output_latency = start.elapsed().as_micros() as i32;
     }
 

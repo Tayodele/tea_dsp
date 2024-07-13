@@ -1,16 +1,9 @@
-load("@bazel_skylib//rules:run_binary.bzl", "run_binary")
 load("//rust:defs.bzl", "rust_binary")
 
 package(default_visibility = ["//visibility:public"])
 
 rust_binary(
     name = "tcp_latency_test",
-    # data = [
-    #     "//engine/cmd:test_engine",
-    # ],
-    env = {
-        "TEST": "TEST",
-    },
     deps = [
         "//engine",
         "//io",

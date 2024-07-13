@@ -23,5 +23,6 @@ rust_library(
         "//engine",
         "@crates_io//:anyhow",
         "@crates_io//:flatbuffers",
+        "@crates_io//:log",
     ],
 )
