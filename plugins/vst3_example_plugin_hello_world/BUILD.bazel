@@ -1,0 +1,21 @@
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
+
+filegroup(
+    name = "srcs",
+    srcs = glob(["**"]),
+)
+
+cmake(
+    name = "vst3_example_plugin_hello_world",
+    cache_entries = {
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang",
+        "CMAKE_C_COMPILER": "/usr/bin/clang",
+    },
+    lib_source = ":srcs",
+    out_binaries = ["HelloWorld.vst3.tar"],
+    postfix_script = "tar -cvf ${INSTALLDIR}/bin/HelloWorld.vst3.tar VST3/Release/HelloWorld.vst3",
+    tags = [
+        "no-sandbox",
+        "requires-network",
+    ],
+)

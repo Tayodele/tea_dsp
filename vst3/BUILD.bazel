@@ -1,0 +1,16 @@
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
+
+cmake(
+    name = "vst3",
+    cache_entries = {
+        "CMAKE_CXX_COMPILER": "/usr/bin/clang",
+        "CMAKE_C_COMPILER": "/usr/bin/clang",
+        "CMAKE_BUILD_TYPE": "Debug",
+    },
+    lib_source = "@vst3_sdk//:all_srcs",
+)
+
+exports_files(
+    ["vst-sdk_3.7.11_build-10_2024-04-22.zip"],
+    visibility = ["//visibility:public"],
+)

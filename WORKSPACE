@@ -42,7 +42,7 @@ load("@rules_rust//crate_universe:repositories.bzl", "crate_universe_dependencie
 
 crate_universe_dependencies()
 
-load("@rules_rust//crate_universe:defs.bzl", "crates_repository", "render_config", "splicing_config")
+load("@rules_rust//crate_universe:defs.bzl", "crates_repository", "splicing_config")
 load("crates.bzl", "EXTERNAL_CRATES")
 
 crates_repository(
@@ -51,12 +51,6 @@ crates_repository(
     isolated = False,
     lockfile = "//:Cargo.Bazel.lock",
     packages = EXTERNAL_CRATES,
-    # Setting the default package name to `""` forces the use of the macros defined in this repository
-    # to always use the root package when looking for dependencies or aliases. This should be considered
-    # optional as the repository also exposes alises for easy access to all dependencies.
-    # render_config = render_config(
-    #     default_package_name = "tea_dsp",
-    # ),
     splicing_config = splicing_config(
         resolver_version = "2",
     ),
@@ -65,3 +59,28 @@ crates_repository(
 load("@crates_io//:defs.bzl", "crate_repositories")
 
 crate_repositories()
+
+###### Foreign Rules ######
+
+http_archive(
+    name = "rules_foreign_cc",
+    sha256 = "4b33d62cf109bcccf286b30ed7121129cc34cf4f4ed9d8a11f38d9108f40ba74",
+    strip_prefix = "rules_foreign_cc-0.11.1",
+    url = "https://github.com/bazelbuild/rules_foreign_cc/releases/download/0.11.1/rules_foreign_cc-0.11.1.tar.gz",
+)
+
+load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
+
+# This sets up some common toolchains for building targets. For more details, please see
+# https://bazelbuild.github.io/rules_foreign_cc/0.11.1/flatten.html#rules_foreign_cc_dependencies
+rules_foreign_cc_dependencies()
+
+###### VST3 ######
+
+load("//vst3:defs.bzl", "vst3_archive")
+
+vst3_archive(
+    name = "vst3_sdk",
+    src = "//vst3:vst-sdk_3.7.11_build-10_2024-04-22.zip",
+    build_file = "//vst3:vst3.BUILD.bazel",
+)
